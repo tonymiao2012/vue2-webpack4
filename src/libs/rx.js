@@ -1,7 +1,7 @@
-import Rx from 'rx'
+import { Observable, interval, take, Subject } from 'rxjs';
 
 // main observable
-const observable = Rx.Observable.create(observer => {
+const observable = new Observable(observer => {
     console.log('-------begin------')
     observer.next('get1')
     setTimeout(() => {
@@ -10,7 +10,7 @@ const observable = Rx.Observable.create(observer => {
     console.log('-------end------')
 })
 
-export const executeRxSubscription = () => {
+const executeRxSubscription = () => {
     const subscription = observable.subscribe((onNext, onError, onCompleted) => {
         if (onNext) {
             console.log(onNext) // text value
@@ -20,9 +20,9 @@ export const executeRxSubscription = () => {
     return { unsubscribe: subscription.unsubscribe }
 }
 
-export const executeRxSubject = () => {
+const executeRxSubject = () => {
     // 两个观察者，订阅了同一个源
-    const source = Rx.Observable.interval(1000).take(3)
+    const source = interval(1000).pipe(take(3))
 
     // subject to A
     source.subscribe((value) => console.log('A' + value))
@@ -33,8 +33,8 @@ export const executeRxSubject = () => {
     }, 1000);
 }
 
-export const executeRxBroadcast = () => {
-    const source = Rx.Observable.interval(1000).take(3)
+const executeRxBroadcast = () => {
+    const source = interval(1000).pipe(take(3))
 
     const subject = {
         observers: [],
@@ -52,11 +52,32 @@ export const executeRxBroadcast = () => {
 
     setTimeout(() => {
         // subject to B
-        source.subscribe((value) => console.log('B' + value))
+        source.subscribe((value) => console.log('B ' + value))
     }, 1000);
 }
 
-// export const executeRxBroadcastWithSubject = 
+const executeRxBroadcastWithSubject = () => {
+    const source = interval(1000).pipe(take(3))
+
+    const subject = new Subject()
+
+    source.subscribe(subject)
+
+    subject.subscribe((value) => console.log('A ' + value))
+
+    setTimeout(() => {
+        subject.subscribe((value) => console.log('B ' + value))
+    }, 1000);
+}
+
+
+export default {
+    executeRxSubscription,
+    executeRxSubject,
+    executeRxBroadcast,
+    executeRxBroadcastWithSubject
+}
+
 
 
 
