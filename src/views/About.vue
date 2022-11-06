@@ -17,7 +17,11 @@ export default {
     // Rx.executeRxSubscription()
     // Rx.executeRxSubject()
     // Rx.executeRxBroadcast()
-    Rx.executeRxBroadcastWithSubject()
+    // Rx.executeRxBroadcastWithSubject()
+    // Rx.executeBehaviorSubject()
+    // Rx.executeReplaySubject()
+    // Rx.executeAsyncSubject()
+    Rx.executeHotObservables()
   },
   methods: {
   }
